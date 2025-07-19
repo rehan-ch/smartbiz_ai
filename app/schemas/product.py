@@ -1,27 +1,19 @@
-from typing import Optional
 from pydantic import BaseModel
+from typing import Optional
+from app.schemas.category import CategoryOut
 
-# Shared properties
 class ProductBase(BaseModel):
     name: str
     sku: str
     price: float
-    stock: int = 0
+    stock: int
 
-# For creating new product
 class ProductCreate(ProductBase):
-    pass
+    category_id: Optional[int]  # 👈 allow assigning category
 
-# For updating product (all fields optional)
-class ProductUpdate(BaseModel):
-    name: Optional[str]	 = None
-    sku: Optional[str] = None
-    price: Optional[float]	 = None
-    stock: Optional[int]	 = None
-
-# For response
 class ProductOut(ProductBase):
     id: int
+    category: Optional[CategoryOut]  # 👈 include nested category
 
     class Config:
         orm_mode = True
